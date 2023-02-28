@@ -1,0 +1,8 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_ernon2_tipoplayer,ernon2.tipoplayer,model_ernon2_tipoplayer,base.group_user,1,1,1,1
+access_ernon2_terrenos,ernon2.terrenos,model_ernon2_terrenos,base.group_user,1,1,1,1
+access_ernon2_subtipo,ernon2.subtipo,model_ernon2_subtipo,base.group_user,1,1,1,1
+access_ernon2_objetos,ernon2.objetos,model_ernon2_objetos,base.group_user,1,1,1,1
+access_ernon2_battle,ernon2.battle,model_ernon2_battle,base.group_user,1,1,1,1
+access_ernon2_battle_wizard,ernon2.battle_wizard,model_ernon2_battle_wizard,base.group_user,1,1,1,1
+access_ernon2_player1_wizard,ernon2.player1_wizard,model_ernon2_player1_wizard,base.group_user,1,1,1,1

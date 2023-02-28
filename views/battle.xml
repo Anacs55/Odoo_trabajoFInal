@@ -1,0 +1,138 @@
+
+<odoo>
+  <data>
+        <!-- explicit list view definition -->
+
+        <record model="ir.ui.view" id="ernon2.battle_tree">
+        <field name="name">ernon2 list</field>
+        <field name="model">ernon2.battle</field>
+        <field name="arch" type="xml">
+            <tree >
+            <field name="name"/>
+            <field name="date_start"/>
+            <field name="date_end"/>
+            <field name="player1"/>
+            <field name="player2"/>
+            <field name = "danyo1"/>
+            <field name = "danyo2"/>
+            </tree>
+        </field>
+        </record>
+
+
+      <record model="ir.ui.view" id="ernon2.battle_form">
+      <field name="name">ernon2 form</field>
+      <field name="model">ernon2.battle</field>
+      <field name="arch" type="xml">
+        <form >
+          <header>
+            <h4> Recuerda que tu daño aumenta comprando objetos</h4>
+            <button name="start_battle"
+                    type="object"
+                    string="Start Battle"
+                    class="btn btn-primary"
+            > Start Battle</button>
+          </header>
+          <sheet>
+          <group>
+
+            <group>
+              <field name="name"/>
+              <field name="date_start"/>
+              <field name="date_end"/>
+            </group>
+
+            <group>
+              <field name="player1"/>
+              <field name = "danyo1"/>
+              <field name="player2"/>
+              <field name = "danyo2"/>
+            </group>
+
+            <group>
+              <field name="winner"/>
+              <field name="loser"/>
+              <field name="empate"/>
+            </group>
+          </group>
+        </sheet>
+        </form>
+      </field>
+     </record>
+
+    <record model="ir.ui.view" id="ernon2.battle_calendar">
+      <field name="name">ernon2 list</field>
+      <field name="model">ernon2.battle</field>
+      <field name="arch" type="xml">
+        <calendar string="Battle Calendar"
+                  date_start="date_start"
+                  date_stop="date_end"
+        >
+          <field name="name"/>
+          <field name="player1"/>
+          <field name="player2"/>
+        </calendar>
+      </field>
+    </record>
+     
+     
+   <record model="ir.ui.view" id="ernon2.battle_wizard_form">
+      <field name="name">ernon2 battle wizard form</field>
+      <field name="model">ernon2.battle_wizard</field>
+      <field name="arch" type="xml">
+        <form >
+          <header>
+            <field name = "danyo1"/>
+            <field name = "danyo2"/>
+            <button name="button_previos" type="object"
+                                        string="Anterior"
+                                        states="2,3"/>
+
+            <button name="button_next" type="object"
+                                        string="Siguiente" states="1,2"
+                                        class="oe_highlight"/>
+            <field name="state" widget="statusbar"/>
+
+          </header>
+          <sheet>
+            <group states="1">
+            <h1>Jugador1</h1>
+              <field name="player1"
+                     domain="[('isplayer','=',True)]"
+              />
+            </group>
+
+            <group states="2">
+            <h1>Jugador2</h1>
+              <field name="player2"
+                     domain="[('isplayer','=',True)]"
+            />
+            </group>
+
+            <group states="3">
+            <h1>Empezar Batalla</h1>
+            <field name ="name"></field>
+            <h2>Características Jugador1</h2>
+              <field name ="player1"></field>
+              <field name ="danyo1"></field>
+
+            <h2>Características Jugador2</h2>
+              <field name ="player2"></field>
+              <field name ="danyo2"></field>
+
+            </group>
+          </sheet> 
+          <footer>
+            <button states='3' name="start_battle" string="Empezar Batalla" type="object" class="btn-primary"/>
+            <button string="Cancel" class="btn-default" special="cancel"/>
+          </footer>
+        </form>
+      </field>
+    </record> 
+
+
+    
+
+
+    </data>
+</odoo>

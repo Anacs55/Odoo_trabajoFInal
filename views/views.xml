@@ -1,0 +1,444 @@
+<odoo>
+  <data>
+
+    <!-- wizard -->
+    <record id="ernon2.battle_wizard_action" model="ir.actions.act_window">
+      <field name="name">Start battle</field>
+      <field name="res_model">ernon2.battle_wizard</field>
+      <field name="view_mode">form</field>
+      <field name="target">new</field>
+    </record> 
+
+    <record id="ernon2.player1_wizard_action" model="ir.actions.act_window">
+      <field name="name">Ver Objetos Player1</field>
+      <field name="res_model">ernon2.player1_wizard</field>
+      <field name="view_mode">form</field>
+      <field name="target">new</field>
+    </record> 
+
+
+
+
+    <!-- wizard view-->
+    <record model="ir.ui.view" id="ernon2.player1_wizard_form">
+            <field name="name">player1 Wizard</field>
+            <field name="model">ernon2.player1_wizard</field>
+            <field name="arch" type="xml">
+                <form string="View objects">
+                    <group>
+                        <field name="player1"/>
+                         <h1>Numero de objetos</h1>
+                        <field name="objeto"/>
+                    </group>
+                    <footer>
+                        <button name="button_mostrar" type="object"
+                                string="Objetos" class="oe_highlight"/>
+          
+                        <button special="cancel" string="Cancel"/>
+                    </footer>
+
+                </form>
+            </field>
+      </record>
+     <!-- explicit list view definition -->
+
+
+    <record model="ir.ui.view" id="ernon2.player_tree">
+      <field name="name">Player </field>
+      <field name="model">res.partner</field>
+      <field name="arch" type="xml">
+        <tree decoration-danger="tipo=='Demonios'" decoration-info="tipo=='Ángeles'" decoration-muted="tipo=='Ángel Caído'" decoration-bf="name">
+          <field name="name"/>
+          <field name="tipo"/>
+          <field name="danyo"/>
+          <field name ="puntos"/>
+          <field name="subtipo"/>
+          <field name="terrenoActual"/>
+          <field name="lista_objeto"/>
+          <field name="isplayer"/>
+        </tree>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="ernon2.player_search">
+            <field name="name">ernon2 search</field>
+            <field name="model">res.partner</field>
+            <field name="arch" type="xml">
+                <search >
+                    <field name="name"/>
+                    <filter name="player" string="Is Player" domain="[('isplayer','=',True)]" />
+                </search>
+              
+            </field>
+    </record>
+
+   
+
+    <record model="ir.ui.view" id="ernon2.player_form">
+      <field name="name">Player</field>
+      <field name="model">res.partner</field>
+      <field name="inherit_id" ref="base.view_partner_form"/>
+      <field name="arch" type="xml">
+        <form>
+         <header>
+          <field name="name" style="background:LIGHTBLUE"  />
+          <button name="boton_terreno"
+                    type="object"
+                    string="Elegir terreno"
+                    class="btn btn-primary">
+              </button>
+               <button name="boton_aceptar_terreno"
+                    type="object"
+                    string="Aceptar"
+                    class="btn btn-primary">
+              </button>
+              <button name="%(battle_wizard_action)d"
+                    type="action"
+                    string="Comenzar batalla"
+                    class="btn btn-primary">
+              </button>
+              <button name="%(player1_wizard_action)d"
+                    type="action"
+                    string="Objetos usuario"
+                    class="btn btn-primary">
+              </button>
+          <field name="name"/>    
+         </header>  
+          <sheet>
+            <group>
+    
+                <field name="name"/>
+                <field name="tipo"/>
+                <field name="danyo" attrs="{'invisible':[('danyo', '=', 0)]}"/>
+                <field name="puntos" attrs="{'invisible':[('puntos', '=', 0)]}"/> 
+                <field name="subtipo"/>
+                <field name="terrenoActual"/>
+                <field name="lista_objeto"> 
+                <field name="isplayer"/>
+
+                <kanban>
+                <field name = "id"/>
+                <field name="name"/>
+                <field name="descripcion"/>
+                <field name="danyo"/>
+                <field name="puntos"/>
+                <field name="imagen" />
+
+                  <templates>
+                      <t t-name="kanban-box">
+                          <div t-attf-class="oe_kanban_card o_kanban_record_has_image_fill ">
+                              <div class="o_kanban_image_fill_left o_kanban_image_full d-none d-md-block"
+                                    t-attf-style="background-image:url('#{kanban_image('ernon2.objetos',
+                     'imagen', record.id.value, placeholder)}')">
+                              </div>
+
+                              <div class="oe_kanban_details d-flex flex-column">
+                                  <a type="open">
+                                        <h4 class="o_kanban_record_title oe_partner_heading" ><field name="name"/></h4>
+                                         <button name="boton_comprar_objetos"
+                                                type="object"
+                                                class="btn btn-primary"
+                                                context="{'ctx_player':parent.id}">
+                                          Comprar Objetos</button>  
+                                  </a>
+                                  <ul>
+                                    <li>Descripcion: <field name="descripcion"/></li>
+                                    <li>Danyo: <field name="danyo"/></li>
+                                    <li>Puntos necesario: <field name="puntos"/></li>
+                                  </ul>
+                              </div>
+                          </div>
+                      </t>
+                  </templates>
+               </kanban>
+
+                </field>
+            </group>
+         </sheet>
+        </form>
+      </field>
+    </record> 
+
+    <record model="ir.ui.view" id="ernon2.tipoplayer_tree">
+      <field name="name">tipoplayer </field>
+      <field name="model">ernon2.tipoplayer</field>
+      <field name="arch" type="xml">
+        <tree decoration-danger="name=='Demonios'" decoration-info="name=='Ángeles'" decoration-muted="name=='Ángel Caído'" >
+          <field name="name"/>
+          <field name="descripcion"/>
+          <field name="imagen" widget="image"/>
+          <field name="hogar"/>
+        </tree>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="ernon2.tipoplayer_form">
+      <field name="name">TipoPlayer</field>
+      <field name="model">ernon2.tipoplayer</field>
+      <field name="arch" type="xml">
+        <form>
+          <sheet>
+            <group>
+              <field name="name"/>
+              <field name="descripcion"/>
+              <field name="imagen" widget="image"/>
+              <field name="hogar"/>
+            </group>
+         </sheet>
+        </form>
+      </field>
+    </record> 
+
+
+     <record model="ir.ui.view" id="ernon2.subtipo_form">
+      <field name="name">Subtipo</field>
+      <field name="model">ernon2.subtipo</field>
+      <field name="arch" type="xml">
+        <form>
+          <sheet>
+            <group>
+              <field name="name"/>
+              <field name="imagen" widget="image"/>
+              <field name="descripcion"/>
+              <field name="tipo_player"/>
+              <field name="grupo"/>
+            </group>
+         </sheet>
+        </form>
+      </field>
+    </record> 
+
+    <record model="ir.ui.view" id="ernon2.subtipo_tree">
+      <field name="name">Subtipo</field>
+      <field name="model">ernon2.subtipo</field>
+      <field name="arch" type="xml">
+        <tree decoration-danger="name=='Amatiel'" >
+            <field name="name"/>
+            <field name="descripcion"/>
+             <field name="imagen" widget="image"/>
+            <field name="tipo_player"/>
+            <field name="grupo"/>
+        </tree>
+      </field>
+    </record>
+
+
+  <record model="ir.ui.view" id="ernon2.subtipo_search">
+      <field name="name">subtipo </field>
+      <field name="model">ernon2.subtipo</field>
+      <field name="arch" type="xml">
+        <search>
+          <field name="tipo_player"/>
+          <field name="grupo"/>
+        </search>
+      </field>
+    </record>
+
+
+   <record model="ir.ui.view" id="ernon2.terrenos_form">
+      <field name="name">Terrenos</field>
+      <field name="model">ernon2.terrenos</field>
+      <field name="arch" type="xml">
+        <form>
+          <sheet>
+            <group>
+              <field name="name"/>
+              <field name="beneficio"/>
+              <field name="danyo"/>
+              <field name="playerTerreno"/>
+              <field name="imagen" widget="image"/>
+             
+            </group>
+         </sheet>
+        </form>
+      </field>
+    </record> 
+
+    <record model="ir.ui.view" id="ernon2.terrenos_tree">
+      <field name="name">Terrenos </field>
+      <field name="model">ernon2.terrenos</field>
+      <field name="arch" type="xml">
+        <tree>
+            <field name="name"/>
+            <field name="beneficio"/>
+            <field name="danyo"/>
+            <field name="imagen" widget="image"/>
+        </tree>
+      </field>
+    </record>
+
+       <record model="ir.ui.view" id="ernon2.objetos_form">
+      <field name="name">Objetos</field>
+      <field name="model">ernon2.objetos</field>
+      <field name="arch" type="xml">
+        <form>
+          <sheet>
+            <group>
+              <field name="name"/>
+              <field name="descripcion"/>
+              <field name="danyo" />
+              <field name="imagen" widget="image"/>
+              <field name="puntos"/>
+            </group>
+         </sheet>
+        </form>
+      </field>
+    </record> 
+
+    <record model="ir.ui.view" id="ernon2.objetos_tree">
+      <field name="name">Objetos </field>
+      <field name="model">ernon2.objetos</field>
+      <field name="arch" type="xml">
+        <tree>
+            <field name="name"/>
+            <field name="descripcion"/>
+            <field name="danyo"/>
+            <field name="imagen" widget="image"/>
+            <field name="puntos"/>
+        </tree>
+      </field>
+    </record>
+
+   <record model="ir.ui.view" id="ernon2.terrenos_kanban">
+          <field name="name">terrenos kanban</field>
+          <field name="model">ernon2.terrenos</field>
+          <field name="arch" type="xml">
+              <kanban>
+                  <field name="id"/>
+                  <field name="name"/>
+                  <field name="beneficio"/>
+                  <field name="danyo"/>
+                  <field name="imagen"/>
+
+                  <templates>
+                      <t t-name="kanban-box">
+                          <div t-attf-class="oe_kanban_card o_kanban_record_has_image_fill ">
+                              <div class="o_kanban_image_fill_left o_kanban_image_full d-none d-md-block"
+                                    t-attf-style="background-image:url('#{kanban_image('ernon2.terrenos',
+                     'imagen', record.id.value, placeholder)}')">
+                              </div>
+
+                              <div class="oe_kanban_details d-flex flex-column">
+                                  <a type="open">
+                                        <h4 class="o_kanban_record_title oe_partner_heading" ><field name="name"/></h4></a>
+                                  <ul>
+                                    <li><field name="beneficio"/></li>
+                                    <li>Danyo: <field name="danyo"/></li>
+                                  </ul>
+                              </div>
+                          </div>
+
+
+                      </t>
+                  </templates>
+              </kanban>
+          </field>
+      </record>
+
+      <record model="ir.ui.view" id="ernon2.objetos_kanban">
+          <field name="name">objetos kanban</field>
+          <field name="model">ernon2.objetos</field>
+          <field name="arch" type="xml">
+              <kanban>
+                <field name = "id"/>
+                <field name="name"/>
+                <field name="descripcion"/>
+                <field name="danyo"/>
+                <field name="puntos"/>
+                <field name="imagen" />
+
+                  <templates>
+                      <t t-name="kanban-box">
+                          <div t-attf-class="oe_kanban_card o_kanban_record_has_image_fill ">
+                              <div class="o_kanban_image_fill_left o_kanban_image_full d-none d-md-block"
+                                    t-attf-style="background-image:url('#{kanban_image('ernon2.objetos',
+                     'imagen', record.id.value, placeholder)}')">
+                              </div>
+
+                              <div class="oe_kanban_details d-flex flex-column">
+                                  <a type="open">
+                                        <h4 class="o_kanban_record_title oe_partner_heading" ><field name="name"/></h4></a>
+                                  <ul>
+                                    <li>Descripcion: <field name="descripcion"/></li>
+                                    <li>Danyo: <field name="danyo"/></li>
+                                    <li>Puntos necesario: <field name="puntos"/></li>
+                                  </ul>
+                              </div>
+                          </div>
+                      </t>
+                  </templates>
+              </kanban>
+          </field>
+      </record>
+
+     <!-- actions opening views on models -->
+    <record model="ir.actions.act_window" id="ernon2.action_player_window">
+      <field name="name">res.partner</field>
+      <field name="res_model">res.partner</field>
+      <field name="view_mode">tree,kanban,form</field>
+    </record>
+
+ 
+
+    <record model="ir.actions.act_window" id="ernon2.action_tipoplayer_window">
+      <field name="name">tipoplayer</field>
+      <field name="res_model">ernon2.tipoplayer</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+ 
+    <record model="ir.actions.act_window" id="ernon2.action_subtipo_window">
+      <field name="name">subtipo</field>
+      <field name="res_model">ernon2.subtipo</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="ernon2.action_terrenos_window">
+      <field name="name">terrenos</field>
+      <field name="res_model">ernon2.terrenos</field>
+      <field name="view_mode">kanban,tree,form</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="ernon2.action_objetos_window">
+      <field name="name">objetos</field>
+      <field name="res_model">ernon2.objetos</field>
+      <field name="view_mode">kanban,tree,form</field>
+    </record>
+
+ <record model="ir.actions.act_window" id="ernon2.action_battle_window">
+      <field name="name">batallas</field>
+      <field name="res_model">ernon2.battle</field>
+      <field name="view_mode">tree,form</field>
+    </record> 
+
+    <!-- Top menu item -->
+
+    <menuitem name="ernon2" id="ernon2.menu_root"/>
+
+    <!-- menu categories -->
+
+    <menuitem name="Player" id="ernon2.menu_1" parent="ernon2.menu_root"/>
+    <menuitem name="Tipos" id="ernon2.menu_2" parent="ernon2.menu_root"/>
+    <menuitem name="Terrenos" id="ernon2.menu_3" parent="ernon2.menu_root"/>
+    <menuitem name="Objetos" id="ernon2.menu_4" parent="ernon2.menu_root"/>
+    <!-- actions -->
+
+    <menuitem name="Player" id="ernon2.menu_1_ernon2_player" parent="ernon2.menu_1"
+            action="ernon2.action_player_window"/> 
+  
+    <menuitem name="Tipo Player" id="ernon2.menu_1_ernon2_tipoplayer" parent="ernon2.menu_2"
+              action="ernon2.action_tipoplayer_window"/> 
+
+    <menuitem name="Subtipo" id="ernon2.menu_1_ernon2_subtipo" parent="ernon2.menu_2"
+              action="ernon2.action_subtipo_window"/> 
+
+    <menuitem name="Terrenos" id="ernon2.menu_1_ernon2_terrenos" parent="ernon2.menu_3"
+              action="ernon2.action_terrenos_window"/> 
+
+    <menuitem name="Objetos" id="ernon2.menu_1_ernon2_objetos" parent="ernon2.menu_4"
+              action="ernon2.action_objetos_window"/> 
+    
+    <menuitem name="Batallas" id="ernon2.menu_1_ernon2_battle" parent="ernon2.menu_1"
+              action="ernon2.action_battle_window"/> 
+
+  </data>
+</odoo>
